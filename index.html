@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Portal Guide - Absar Alomran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Kufi+Arabic:wght@300;400;500;600;700;800&display=swap');
+        
+        body { font-family: 'Inter', 'Noto Kufi Arabic', sans-serif; }
+        .slide-enter { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @media print { .no-print { display: none !important; } }
+        
+        .arabic-text { font-family: 'Noto Kufi Arabic', sans-serif; direction: rtl; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+
+    <div id="app" class="min-h-screen flex flex-col items-center justify-center p-4">
+        <!-- Main Container -->
+        <div class="w-full max-w-7xl aspect-[16/9] bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col relative border border-white">
+            
+            <!-- Header -->
+            <div class="h-16 border-b border-slate-100 px-8 flex items-center justify-between bg-white z-20">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-bold text-slate-700 tracking-tight">Vendor Portal Guide | دليل الموردين</span>
+                </div>
+                <div class="flex items-center gap-4 no-print">
+                    <button onclick="window.print()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                        <i data-lucide="printer" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-1 bg-slate-50 no-print">
+                <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-700 ease-in-out" style="width: 0%"></div>
+            </div>
+
+            <!-- Content -->
+            <div id="slide-content" class="flex-1 p-0 flex relative slide-enter">
+                <!-- Injected by JS -->
+            </div>
+
+            <!-- Controls -->
+            <div class="absolute bottom-8 left-0 right-0 px-10 flex justify-between items-center z-10 no-print">
+                <div class="flex gap-3">
+                    <button id="prev-btn" onclick="prevSlide()" class="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-all disabled:opacity-20">
+                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                    </button>
+                    <button id="next-btn" onclick="nextSlide()" class="px-6 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center gap-2 hover:bg-slate-800 transition-all disabled:opacity-20">
+                        Next / التالي <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+                <div class="text-slate-400 text-sm font-medium">
+                    Slide <span id="current-index" class="text-slate-900">1</span> of <span id="total-slides">9</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            {
+                type: "title",
+                enTitle: "Vendor Portal",
+                arTitle: "بوابة الموردين",
+                enSubtitle: "Absar Alomran Contracting Co.",
+                arSubtitle: "شركة أبصار العمران للمقاولات",
+                image: "https://i.postimg.cc/8cwx00Vr/2.png"
+            },
+            {
+                type: "visual",
+                enTitle: "1. Login & Profile",
+                arTitle: "1. تسجيل الدخول والبيانات",
+                icon: "log-in",
+                image: "https://i.postimg.cc/057dxwFS/Screenshot-2026-02-08-at-2-46-01-PM.png",
+                enPoints: [
+                    "Credentials are sent to your registered email address.",
+                    "Verify company name and VAT number upon entry.",
+                    "Update contact details and address."
+                ],
+                arPoints: [
+                    "يتم إرسال بيانات الدخول إلى بريدك الإلكتروني المسجل.",
+                    "يرجى التحقق من اسم الشركة والرقم الضريبي.",
+                    "حدث بيانات الاتصال والعنوان لضمان الدقة."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "2. Main Dashboard",
+                arTitle: "2. لوحة التحكم الرئيسية",
+                icon: "layout",
+                image: "https://i.postimg.cc/8cwx00Vr/2.png",
+                enPoints: [
+                    "Quick access to invoices and orders.",
+                    "View active company profile in the sidebar.",
+                    "Manage 'Contact & Security' settings."
+                ],
+                arPoints: [
+                    "وصول سريع للفواتير والطلبات من الواجهة.",
+                    "عرض ملف تعريف الشركة النشط في الشريط الجانبي.",
+                    "إدارة إعدادات 'الاتصال والأمان' بسهولة."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "3. My Invoices (Uploaded)",
+                arTitle: "3. فواتيري (المرفوعة)",
+                icon: "file-text",
+                image: "https://i.postimg.cc/y60XBZtm/Screenshot-2026-02-08-at-2-46-15-PM.png",
+                enPoints: [
+                    "Track all invoices you have manually uploaded.",
+                    "Monitor status: Submitted, Under Review, or Approved.",
+                    "Link invoices to specific Purchase Orders (PO)."
+                ],
+                arPoints: [
+                    "تتبع كافة الفواتير التي قمت برفعها يدوياً.",
+                    "مراقبة حالة الفاتورة: مرسلة، مراجعة، أو معتمدة.",
+                    "ربط الفواتير بأوامر الشراء (PO) المحددة."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "4. Create New Invoice",
+                arTitle: "4. رفع فاتورة جديدة",
+                icon: "upload-cloud",
+                image: "https://i.postimg.cc/L4jBR1wz/Screenshot-2026-02-08-at-2-46-32-PM.png",
+                enPoints: [
+                    "Select the matching PO from the dropdown menu.",
+                    "Enter invoice number and date accurately.",
+                    "PDF format is preferred for attachments."
+                ],
+                arPoints: [
+                    "اختر أمر الشراء المطابق من القائمة المنسدلة.",
+                    "أدخل رقم الفاتورة وتاريخها بدقة تامة.",
+                    "يفضل استخدام صيغة PDF للمرفقات."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "5. Purchase Orders (PO)",
+                arTitle: "5. أوامر الشراء (PO)",
+                icon: "shopping-bag",
+                image: "https://i.postimg.cc/Wp06jkC6/Screenshot-2026-02-08-at-2-46-43-PM.png",
+                enPoints: [
+                    "View all official POs issued by the company.",
+                    "Check confirmation dates and total amounts.",
+                    "Match delivery quantities with the PO."
+                ],
+                arPoints: [
+                    "عرض كافة أوامر الشراء الرسمية الصادرة.",
+                    "تأكد من تواريخ التأكيد والمبالغ الإجمالية.",
+                    "طابق كميات التسليم مع أمر الشراء قبل الفاتورة."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "6. Legal Invoices & Bills",
+                arTitle: "6. الفواتير والكمبيالات النظامية",
+                icon: "credit-card",
+                image: "https://i.postimg.cc/FF0gmL8b/Screenshot-2026-02-08-at-2-46-52-PM.png",
+                enPoints: [
+                    "Track invoices registered in the ERP system.",
+                    "Check 'Due Date' to manage cash flow.",
+                    "Payment status: Awaiting Payment vs. Paid."
+                ],
+                arPoints: [
+                    "تتبع الفواتير المسجلة في النظام المحاسبي.",
+                    "تحقق من 'تاريخ الاستحقاق' لإدارة السيولة.",
+                    "حالات الدفع: في انتظار الدفع مقابل مدفوعة."
+                ]
+            },
+            {
+                type: "summary",
+                enTitle: "Important Compliance",
+                arTitle: "تعليمات الالتزام الهامة",
+                icon: "alert-circle",
+                enPoints: [
+                    "Always select the correct PO.",
+                    "Items must match PO details exactly.",
+                    "Monitor status regularly."
+                ],
+                arPoints: [
+                    "يجب اختيار أمر الشراء الصحيح دائماً.",
+                    "يجب تطابق البنود مع تفاصيل أمر الشراء.",
+                    "راقب الحالة بانتظام لمعالجة أي تصحيحات."
+                ]
+            },
+            {
+                type: "contact",
+                enTitle: "Support & Contact",
+                arTitle: "الدعم والتواصل",
+                icon: "headset",
+                email: "support@absar-alomran.com",
+                phone: "+966 58 114 2142",
+                enDetails: "Our technical team is ready to assist you Sunday to Thursday, 8 AM to 5 PM.",
+                arDetails: "فريقنا الفني مستعد لمساعدتكم من الأحد إلى الخميس، من الساعة 8 صباحاً حتى 5 مساءً."
+            }
+        ];
+
+        function renderSlide() {
+            const container = document.getElementById('slide-content');
+            const data = slides[currentSlide];
+            
+            document.getElementById('progress-bar').style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
+            document.getElementById('current-index').innerText = currentSlide + 1;
+            document.getElementById('total-slides').innerText = slides.length;
+            
+            let html = '';
+
+            if (data.type === 'title') {
+                html = `
+                    <div class="w-1/3 p-12 flex flex-col justify-center border-r border-slate-50">
+                        <h1 class="text-5xl font-black text-slate-900 leading-tight mb-4">${data.enTitle}</h1>
+                        <p class="text-xl text-slate-500 font-medium">${data.enSubtitle}</p>
+                    </div>
+                    <div class="w-1/3 bg-slate-50 flex items-center justify-center p-8">
+                        <img src="${data.image}" class="w-full rounded-2xl shadow-2xl border-4 border-white" alt="Portal">
+                    </div>
+                    <div class="w-1/3 p-12 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
+                        <h1 class="text-5xl font-black text-slate-900 leading-tight mb-4">${data.arTitle}</h1>
+                        <p class="text-xl text-slate-500 font-medium">${data.arSubtitle}</p>
+                    </div>
+                `;
+            } else if (data.type === 'visual') {
+                html = `
+                    <div class="w-1/4 p-8 flex flex-col justify-center border-r border-slate-50">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                                <i data-lucide="${data.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <h2 class="text-xl font-bold text-slate-800">${data.enTitle}</h2>
+                        </div>
+                        <ul class="space-y-4">
+                            ${data.enPoints.map(p => `
+                                <li class="flex items-start gap-3">
+                                    <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
+                                    <p class="text-slate-600 text-sm leading-relaxed">${p}</p>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                    <div class="w-2/4 bg-slate-50 p-6 flex items-center justify-center">
+                        <div class="bg-white p-2 rounded-xl shadow-xl border border-slate-200 w-full">
+                            <img src="${data.image}" class="w-full h-auto rounded-lg" alt="Preview">
+                        </div>
+                    </div>
+                    <div class="w-1/4 p-8 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
+                        <div class="flex items-center gap-3 mb-6 flex-row-reverse">
+                            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
+                                <i data-lucide="${data.icon}" class="w-6 h-6"></i>
+                            </div>
+                            <h2 class="text-xl font-bold text-slate-800">${data.arTitle}</h2>
+                        </div>
+                        <ul class="space-y-4 w-full">
+                            ${data.arPoints.map(p => `
+                                <li class="flex items-start gap-3 flex-row-reverse">
+                                    <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
+                                    <p class="text-slate-600 text-sm leading-relaxed">${p}</p>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            } else if (data.type === 'summary') {
+                html = `
+                    <div class="w-full flex items-center justify-center p-12 bg-slate-900 text-white h-full">
+                        <div class="grid grid-cols-3 w-full gap-12 items-center">
+                            <div class="text-left space-y-4">
+                                <h2 class="text-3xl font-black mb-6">${data.enTitle}</h2>
+                                ${data.enPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> ${p}</div>`).join('')}
+                            </div>
+                            <div class="text-center">
+                                <i data-lucide="shield-alert" class="w-16 h-16 text-amber-400 mx-auto mb-4"></i>
+                                <p class="text-slate-400 uppercase tracking-widest text-xs font-bold">Important Instructions | تعليمات هامة</p>
+                            </div>
+                            <div class="text-right arabic-text space-y-4">
+                                <h2 class="text-3xl font-black mb-6">${data.arTitle}</h2>
+                                ${data.arPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3 flex-row-reverse"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> ${p}</div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (data.type === 'contact') {
+                html = `
+                    <div class="w-1/3 p-12 flex flex-col justify-center border-r border-slate-50">
+                        <h2 class="text-4xl font-black text-slate-900 mb-6">${data.enTitle}</h2>
+                        <p class="text-slate-600 mb-8">${data.enDetails}</p>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 text-blue-600 font-bold">
+                                <i data-lucide="mail" class="w-5 h-5"></i> ${data.email}
+                            </div>
+                            <div class="flex items-center gap-4 text-blue-600 font-bold">
+                                <i data-lucide="phone" class="w-5 h-5"></i> ${data.phone}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/3 bg-blue-600 flex flex-col items-center justify-center p-12 text-white text-center">
+                        <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6">
+                            <i data-lucide="headset" class="w-12 h-12"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Technical Support</h3>
+                        <h3 class="text-2xl font-bold arabic-text">الدعم الفني</h3>
+                    </div>
+                    <div class="w-1/3 p-12 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
+                        <h2 class="text-4xl font-black text-slate-900 mb-6">${data.arTitle}</h2>
+                        <p class="text-slate-600 mb-8">${data.arDetails}</p>
+                        <div class="space-y-4">
+                            <div class="flex flex-row-reverse items-center gap-4 text-blue-600 font-bold">
+                                <i data-lucide="mail" class="w-5 h-5"></i> <span dir="ltr">${data.email}</span>
+                            </div>
+                            <div class="flex flex-row-reverse items-center gap-4 text-blue-600 font-bold">
+                                <i data-lucide="phone" class="w-5 h-5"></i> <span dir="ltr">${data.phone}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+            lucide.createIcons();
+        }
+
+        function nextSlide() { if(currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
+        function prevSlide() { if(currentSlide > 0) { currentSlide--; renderSlide(); } }
+
+        window.onload = renderSlide;
+    </script>
+</body>
+</html>
