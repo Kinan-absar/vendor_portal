@@ -18,21 +18,26 @@
         @media print { .no-print { display: none !important; } }
         
         .arabic-text { font-family: 'Noto Kufi Arabic', sans-serif; direction: rtl; }
+
+        /* Custom scrollbar for mobile overflow */
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
+        .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800">
 
-    <div id="app" class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div id="app" class="min-h-screen flex flex-col items-center justify-center p-2 md:p-4">
         <!-- Main Container -->
-        <div class="w-full max-w-7xl aspect-[16/9] bg-white shadow-2xl rounded-3xl overflow-hidden flex flex-col relative border border-white">
+        <div class="w-full max-w-7xl md:aspect-[16/9] bg-white shadow-2xl rounded-2xl md:rounded-3xl overflow-hidden flex flex-col relative border border-white min-h-[95vh] md:min-h-0">
             
             <!-- Header -->
-            <div class="h-16 border-b border-slate-100 px-8 flex items-center justify-between bg-white z-20">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
-                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+            <div class="h-14 md:h-16 border-b border-slate-100 px-4 md:px-8 flex items-center justify-between bg-white z-20 shrink-0">
+                <div class="flex items-center gap-2 md:gap-3">
+                    <div class="w-7 h-7 md:w-8 md:h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                        <i data-lucide="shield-check" class="w-4 h-4 md:w-5 md:h-5"></i>
                     </div>
-                    <span class="font-bold text-slate-700 tracking-tight">Vendor Portal Guide | دليل الموردين</span>
+                    <span class="font-bold text-sm md:text-base text-slate-700 tracking-tight">Vendor Portal Guide | دليل الموردين</span>
                 </div>
                 <div class="flex items-center gap-4 no-print">
                     <button onclick="window.print()" class="text-slate-400 hover:text-slate-600 transition-colors">
@@ -42,27 +47,27 @@
             </div>
 
             <!-- Progress Bar -->
-            <div class="w-full h-1 bg-slate-50 no-print">
+            <div class="w-full h-1 bg-slate-50 no-print shrink-0">
                 <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-700 ease-in-out" style="width: 0%"></div>
             </div>
 
-            <!-- Content -->
-            <div id="slide-content" class="flex-1 p-0 flex relative slide-enter">
+            <!-- Content Area - Scrollable on mobile -->
+            <div id="slide-content" class="flex-1 flex flex-col md:flex-row relative slide-enter overflow-y-auto custom-scroll">
                 <!-- Injected by JS -->
             </div>
 
             <!-- Controls -->
-            <div class="absolute bottom-8 left-0 right-0 px-10 flex justify-between items-center z-10 no-print">
-                <div class="flex gap-3">
-                    <button id="prev-btn" onclick="prevSlide()" class="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-all disabled:opacity-20">
-                        <i data-lucide="arrow-left" class="w-5 h-5"></i>
+            <div class="bg-white border-t md:border-t-0 md:absolute bottom-0 left-0 right-0 p-4 md:p-10 flex justify-between items-center z-10 no-print shrink-0">
+                <div class="flex gap-2 md:gap-3">
+                    <button id="prev-btn" onclick="prevSlide()" class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50 transition-all disabled:opacity-20">
+                        <i data-lucide="arrow-left" class="w-4 h-4 md:w-5 md:h-5"></i>
                     </button>
-                    <button id="next-btn" onclick="nextSlide()" class="px-6 h-12 rounded-full bg-slate-900 text-white flex items-center justify-center gap-2 hover:bg-slate-800 transition-all disabled:opacity-20">
-                        Next / التالي <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    <button id="next-btn" onclick="nextSlide()" class="px-4 md:px-6 h-10 md:h-12 rounded-full bg-slate-900 text-white flex items-center justify-center gap-2 hover:bg-slate-800 transition-all disabled:opacity-20 text-sm md:text-base">
+                        Next / التالي <i data-lucide="arrow-right" class="w-4 h-4 md:w-5 md:h-5"></i>
                     </button>
                 </div>
-                <div class="text-slate-400 text-sm font-medium">
-                    Slide <span id="current-index" class="text-slate-900">1</span> of <span id="total-slides">9</span>
+                <div class="text-slate-400 text-xs md:text-sm font-medium">
+                    <span id="current-index" class="text-slate-900">1</span> / <span id="total-slides">10</span>
                 </div>
             </div>
         </div>
@@ -74,27 +79,27 @@
         const slides = [
             {
                 type: "title",
-                enTitle: "Vendor Portal",
-                arTitle: "بوابة الموردين",
-                enSubtitle: "Absar Alomran Construction Co.",
-                arSubtitle: "شركة أبصار العمران للمقاولات",
-                image: "https://i.postimg.cc/8cwx00Vr/2.png"
+                enTitle: "Vendor Portal Guide",
+                arTitle: "دليل بوابة الموردين",
+                enSubtitle: "Absar Alomran  Co.",
+                arSubtitle: "شركة أبصار العمران ",
+                image: "https://i.postimg.cc/6qHB3MSX/VENDOR-DASHBOARD.png"
             },
             {
                 type: "visual",
-                enTitle: "1. Login & Profile",
-                arTitle: "1. تسجيل الدخول والبيانات",
+                enTitle: "1. Login & Profile Settings",
+                arTitle: "1. إعدادات الحساب والملف الشخصي",
                 icon: "log-in",
-                image: "https://i.postimg.cc/057dxwFS/Screenshot-2026-02-08-at-2-46-01-PM.png",
+                image: "https://i.postimg.cc/4y8XdWMn/MY-PROFILE.png",
                 enPoints: [
-                    "Credentials are sent to your registered email address.",
-                    "Verify company name and VAT number upon entry.",
-                    "Update contact details and address."
+                    "Access credentials are sent to your registered email address.",
+                    "Verify company tax parameters (Name and VAT number) upon entry.",
+                    "Keep address and active phone lines accurate for communication."
                 ],
                 arPoints: [
-                    "يتم إرسال بيانات الدخول إلى بريدك الإلكتروني المسجل.",
-                    "يرجى التحقق من اسم الشركة والرقم الضريبي.",
-                    "حدث بيانات الاتصال والعنوان لضمان الدقة."
+                    "يتم إرسال بيانات الدخول المعتمدة إلى بريدكم الإلكتروني المسجل.",
+                    "يرجى مراجعة بيانات الشركة الضريبية (الاسم والرقم الضريبي) فور الدخول.",
+                    "حدث بيانات العنوان وأرقام الاتصال لضمان سهولة التواصل."
                 ]
             },
             {
@@ -102,84 +107,101 @@
                 enTitle: "2. Main Dashboard",
                 arTitle: "2. لوحة التحكم الرئيسية",
                 icon: "layout",
-                image: "https://i.postimg.cc/8cwx00Vr/2.png",
+                image: "https://i.postimg.cc/6qHB3MSX/VENDOR-DASHBOARD.png",
                 enPoints: [
-                    "Quick access to invoices and orders.",
-                    "View active company profile in the sidebar.",
-                    "Manage 'Contact & Security' settings."
+                    "Quick summary cards detailing your invoice submission metrics.",
+                    "A central feed showing your system invoices and purchase orders.",
+                    "Easy launch buttons to start uploading or viewing profile details."
                 ],
                 arPoints: [
-                    "وصول سريع للفواتير والطلبات من الواجهة.",
-                    "عرض ملف تعريف الشركة النشط في الشريط الجانبي.",
-                    "إدارة إعدادات 'الاتصال والأمان' بسهولة."
+                    "بطاقات ملخص سريعة توضح إحصائيات الفواتير المرفوعة.",
+                    "قائمة مركزية لمتابعة فواتير النظام وأوامر التوريد النشطة.",
+                    "أزرار وصول سريعة لبدء رفع الفواتير أو مراجعة بيانات الملف."
                 ]
             },
             {
                 type: "visual",
-                enTitle: "3. My Invoices (Uploaded)",
-                arTitle: "3. فواتيري (المرفوعة)",
+                enTitle: "3. My Invoices Overview",
+                arTitle: "3. استعراض فواتيري المرفوعة",
                 icon: "file-text",
-                image: "https://i.postimg.cc/y60XBZtm/Screenshot-2026-02-08-at-2-46-15-PM.png",
+                image: "https://i.postimg.cc/nVTF0LLS/MY-INVOICES.png",
                 enPoints: [
-                    "Track all invoices you have manually uploaded.",
-                    "Monitor status: Submitted, Under Review, or Approved.",
-                    "Link invoices to specific Purchase Orders (PO)."
+                    "Track the real-time submission status of manually uploaded invoices.",
+                    "Filter by status: Submitted, Under Review, Approved, or Rejected.",
+                    "Click the eye icon to explore comments or matching issues."
                 ],
                 arPoints: [
-                    "تتبع كافة الفواتير التي قمت برفعها يدوياً.",
-                    "مراقبة حالة الفاتورة: مرسلة، مراجعة، أو معتمدة.",
-                    "ربط الفواتير بأوامر الشراء (PO) المحددة."
+                    "متابعة دقيقة لحالة الفواتير المرفوعة يدوياً بشكل مباشر.",
+                    "فرز سريع حسب الحالة: مرسلة، قيد المراجعة، معتمدة، أو مرفوضة.",
+                    "اضغط على أيقونة العين لاستعراض تعليقات المراجعة وأي ملاحظات."
                 ]
             },
             {
                 type: "visual",
-                enTitle: "4. Create New Invoice",
-                arTitle: "4. رفع فاتورة جديدة",
+                enTitle: "4. Uploading Invoices",
+                arTitle: "4. رفع فاتورة جديدة للبوابة",
                 icon: "upload-cloud",
-                image: "https://i.postimg.cc/L4jBR1wz/Screenshot-2026-02-08-at-2-46-32-PM.png",
+                image: "https://i.postimg.cc/4y8XdWMY/UPLOAD-INVOICE.png",
                 enPoints: [
-                    "Select the matching PO from the dropdown menu.",
-                    "Enter invoice number and date accurately.",
-                    "PDF format is preferred for attachments."
+                    "Select the exact corresponding Purchase Order from the dropdown list.",
+                    "Enter the official Invoice Number, Date, and matching Net Amount.",
+                    "Upload a clear PDF, JPG, or PNG attachment (up to 10 MB)."
                 ],
                 arPoints: [
-                    "اختر أمر الشراء المطابق من القائمة المنسدلة.",
-                    "أدخل رقم الفاتورة وتاريخها بدقة تامة.",
-                    "يفضل استخدام صيغة PDF للمرفقات."
+                    "اختر أمر الشراء (PO) المطابق بدقة تامة من القائمة المنسدلة.",
+                    "أدخل رقم الفاتورة الرسمي، تاريخ الإصدار، والمبلغ الإجمالي المطابق.",
+                    "أرفق نسخة واضحة بصيغة PDF أو JPG أو PNG (بحد أقصى 10 ميجابايت)."
+                ]
+            },
+            {
+                type: "visual",
+                enTitle: "4b. Invoice Progress & Details",
+                arTitle: "4ب. تتبع تفاصيل الفاتورة وحالتها",
+                icon: "activity",
+                image: "https://i.postimg.cc/gc4zN00D/INVOICE-DETAILS.png",
+                enPoints: [
+                    "An interactive pipeline tracker visually flags current progress stages.",
+                    "Review specific review comments left by the accounting team.",
+                    "Confirm the matching purchase order link and logged metadata."
+                ],
+                arPoints: [
+                    "مؤشر مرئي تفاعلي يوضح مرحلة معالجة الفاتورة الحالية بدقة.",
+                    "استعراض الملاحظات والتعليقات المكتوبة من قبل فريق المحاسبة.",
+                    "تأكيد ارتباط الفاتورة بأمر الشراء المعتمد والبيانات المسجلة."
                 ]
             },
             {
                 type: "visual",
                 enTitle: "5. Purchase Orders (PO)",
-                arTitle: "5. أوامر الشراء (PO)",
+                arTitle: "5. استعراض أوامر الشراء (PO)",
                 icon: "shopping-bag",
-                image: "https://i.postimg.cc/Wp06jkC6/Screenshot-2026-02-08-at-2-46-43-PM.png",
+                image: "https://i.postimg.cc/QC6jtfPM/PURCHASE-ORDERS.png",
                 enPoints: [
-                    "View all official POs issued by the company.",
-                    "Check confirmation dates and total amounts.",
-                    "Match delivery quantities with the PO."
+                    "Review legal PO numbers generated directly by the company ERP.",
+                    "Validate the official confirmation date and total authorized amount.",
+                    "Cross-reference lines to prepare matching billing information."
                 ],
                 arPoints: [
-                    "عرض كافة أوامر الشراء الرسمية الصادرة.",
-                    "تأكد من تواريخ التأكيد والمبالغ الإجمالية.",
-                    "طابق كميات التسليم مع أمر الشراء قبل الفاتورة."
+                    "مراجعة أوامر الشراء الرسمية الصادرة من نظام الشركة مباشرة.",
+                    "التأكد من تاريخ التأكيد والمبلغ الإجمالي المعتمد لأمر الشراء.",
+                    "مطابقة البنود والكميات المعتمدة قبل البدء بإصدار فواتيرك."
                 ]
             },
             {
                 type: "visual",
-                enTitle: "6. Legal Invoices & Bills",
-                arTitle: "6. الفواتير والكمبيالات النظامية",
+                enTitle: "6. System Invoices & Payments",
+                arTitle: "6. فواتير النظام وحالة الدفع",
                 icon: "credit-card",
-                image: "https://i.postimg.cc/FF0gmL8b/Screenshot-2026-02-08-at-2-46-52-PM.png",
+                image: "https://i.postimg.cc/yxf7dL5d/INVOICE-PAYMENT-STATUS.png",
                 enPoints: [
-                    "Track invoices registered in the ERP system.",
-                    "Check 'Due Date' to manage cash flow.",
-                    "Payment status: Awaiting Payment vs. Paid."
+                    "Monitor legally integrated bills registered in our accounts ledger.",
+                    "Check due date timelines to accurately estimate cash flow cycles.",
+                    "Track processing statuses such as 'Waiting for Payment'."
                 ],
                 arPoints: [
-                    "تتبع الفواتير المسجلة في النظام المحاسبي.",
-                    "تحقق من 'تاريخ الاستحقاق' لإدارة السيولة.",
-                    "حالات الدفع: في انتظار الدفع مقابل مدفوعة."
+                    "مراقبة القيود المسجلة للفواتير والكمبيالات في نظامنا المحاسبي.",
+                    "مراجعة تواريخ الاستحقاق لتخطيط التدفقات النقدية الخاصة بك بدقة.",
+                    "متابعة حالات الصرف والتحصيل مثل حالة 'في انتظار الدفع'."
                 ]
             },
             {
@@ -204,7 +226,7 @@
                 arTitle: "الدعم والتواصل",
                 icon: "headset",
                 email: "support@absar-alomran.com",
-                phone: "+966 50 613 1484",
+                phone: "+966 58 114 2142",
                 enDetails: "Our technical team is ready to assist you Sunday to Thursday, 8 AM to 5 PM.",
                 arDetails: "فريقنا الفني مستعد لمساعدتكم من الأحد إلى الخميس، من الساعة 8 صباحاً حتى 5 مساءً."
             }
@@ -222,28 +244,28 @@
 
             if (data.type === 'title') {
                 html = `
-                    <div class="w-1/3 p-12 flex flex-col justify-center border-r border-slate-50">
-                        <h1 class="text-5xl font-black text-slate-900 leading-tight mb-4">${data.enTitle}</h1>
-                        <p class="text-xl text-slate-500 font-medium">${data.enSubtitle}</p>
+                    <div class="w-full md:w-1/3 p-6 md:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-50 order-1">
+                        <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-2 md:mb-4">${data.enTitle}</h1>
+                        <p class="text-lg md:text-xl text-slate-500 font-medium">${data.enSubtitle}</p>
                     </div>
-                    <div class="w-1/3 bg-slate-50 flex items-center justify-center p-8">
-                        <img src="${data.image}" class="w-full rounded-2xl shadow-2xl border-4 border-white" alt="Portal">
+                    <div class="w-full md:w-1/3 bg-slate-50 flex items-center justify-center p-6 md:p-8 order-2 md:order-2">
+                        <img src="${data.image}" class="w-full max-w-sm md:max-w-none rounded-2xl shadow-2xl border-4 border-white" alt="Portal">
                     </div>
-                    <div class="w-1/3 p-12 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
-                        <h1 class="text-5xl font-black text-slate-900 leading-tight mb-4">${data.arTitle}</h1>
-                        <p class="text-xl text-slate-500 font-medium">${data.arSubtitle}</p>
+                    <div class="w-full md:w-1/3 p-6 md:p-12 flex flex-col justify-center items-end text-right arabic-text border-t md:border-t-0 md:border-l border-slate-50 order-3 md:order-3 mb-16 md:mb-0">
+                        <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-2 md:mb-4">${data.arTitle}</h1>
+                        <p class="text-lg md:text-xl text-slate-500 font-medium">${data.arSubtitle}</p>
                     </div>
                 `;
             } else if (data.type === 'visual') {
                 html = `
-                    <div class="w-1/4 p-8 flex flex-col justify-center border-r border-slate-50">
-                        <div class="flex items-center gap-3 mb-6">
+                    <div class="w-full md:w-1/4 p-6 md:p-8 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-50 order-1">
+                        <div class="flex items-center gap-3 mb-4 md:mb-6">
                             <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                                 <i data-lucide="${data.icon}" class="w-6 h-6"></i>
                             </div>
-                            <h2 class="text-xl font-bold text-slate-800">${data.enTitle}</h2>
+                            <h2 class="text-lg md:text-xl font-bold text-slate-800">${data.enTitle}</h2>
                         </div>
-                        <ul class="space-y-4">
+                        <ul class="space-y-3 md:space-y-4">
                             ${data.enPoints.map(p => `
                                 <li class="flex items-start gap-3">
                                     <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
@@ -252,19 +274,19 @@
                             `).join('')}
                         </ul>
                     </div>
-                    <div class="w-2/4 bg-slate-50 p-6 flex items-center justify-center">
+                    <div class="w-full md:w-2/4 bg-slate-50 p-4 md:p-6 flex items-center justify-center order-2">
                         <div class="bg-white p-2 rounded-xl shadow-xl border border-slate-200 w-full">
                             <img src="${data.image}" class="w-full h-auto rounded-lg" alt="Preview">
                         </div>
                     </div>
-                    <div class="w-1/4 p-8 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
-                        <div class="flex items-center gap-3 mb-6 flex-row-reverse">
+                    <div class="w-full md:w-1/4 p-6 md:p-8 flex flex-col justify-center items-end text-right arabic-text border-t md:border-t-0 md:border-l border-slate-50 order-3 mb-16 md:mb-0">
+                        <div class="flex items-center gap-3 mb-4 md:mb-6 flex-row-reverse">
                             <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600">
                                 <i data-lucide="${data.icon}" class="w-6 h-6"></i>
                             </div>
-                            <h2 class="text-xl font-bold text-slate-800">${data.arTitle}</h2>
+                            <h2 class="text-lg md:text-xl font-bold text-slate-800">${data.arTitle}</h2>
                         </div>
-                        <ul class="space-y-4 w-full">
+                        <ul class="space-y-3 md:space-y-4 w-full">
                             ${data.arPoints.map(p => `
                                 <li class="flex items-start gap-3 flex-row-reverse">
                                     <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0"></div>
@@ -276,52 +298,52 @@
                 `;
             } else if (data.type === 'summary') {
                 html = `
-                    <div class="w-full flex items-center justify-center p-12 bg-slate-900 text-white h-full">
-                        <div class="grid grid-cols-3 w-full gap-12 items-center">
-                            <div class="text-left space-y-4">
-                                <h2 class="text-3xl font-black mb-6">${data.enTitle}</h2>
-                                ${data.enPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> ${p}</div>`).join('')}
+                    <div class="w-full flex flex-col md:flex-row items-center justify-center p-6 md:p-12 bg-slate-900 text-white min-h-full">
+                        <div class="flex flex-col md:grid md:grid-cols-3 w-full gap-8 md:gap-12 items-center">
+                            <div class="text-left space-y-3 md:space-y-4 w-full order-2 md:order-1">
+                                <h2 class="text-2xl md:text-3xl font-black mb-4 md:mb-6">${data.enTitle}</h2>
+                                ${data.enPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3 text-sm"><i data-lucide="check" class="text-blue-400 w-4 h-4 shrink-0"></i> ${p}</div>`).join('')}
                             </div>
-                            <div class="text-center">
-                                <i data-lucide="shield-alert" class="w-16 h-16 text-amber-400 mx-auto mb-4"></i>
-                                <p class="text-slate-400 uppercase tracking-widest text-xs font-bold">Important Instructions | تعليمات هامة</p>
+                            <div class="text-center order-1 md:order-2">
+                                <i data-lucide="shield-alert" class="w-12 h-12 md:w-16 md:h-16 text-amber-400 mx-auto mb-4"></i>
+                                <p class="text-slate-400 uppercase tracking-widest text-[10px] md:text-xs font-bold">Important Instructions | تعليمات هامة</p>
                             </div>
-                            <div class="text-right arabic-text space-y-4">
-                                <h2 class="text-3xl font-black mb-6">${data.arTitle}</h2>
-                                ${data.arPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3 flex-row-reverse"><i data-lucide="check" class="text-blue-400 w-4 h-4"></i> ${p}</div>`).join('')}
+                            <div class="text-right arabic-text space-y-3 md:space-y-4 w-full order-3 mb-16 md:mb-0">
+                                <h2 class="text-2xl md:text-3xl font-black mb-4 md:mb-6">${data.arTitle}</h2>
+                                ${data.arPoints.map(p => `<div class="p-3 bg-slate-800 rounded-lg flex items-center gap-3 flex-row-reverse text-sm"><i data-lucide="check" class="text-blue-400 w-4 h-4 shrink-0"></i> ${p}</div>`).join('')}
                             </div>
                         </div>
                     </div>
                 `;
             } else if (data.type === 'contact') {
                 html = `
-                    <div class="w-1/3 p-12 flex flex-col justify-center border-r border-slate-50">
-                        <h2 class="text-4xl font-black text-slate-900 mb-6">${data.enTitle}</h2>
-                        <p class="text-slate-600 mb-8">${data.enDetails}</p>
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-4 text-blue-600 font-bold">
+                    <div class="w-full md:w-1/3 p-6 md:p-12 flex flex-col justify-center border-b md:border-b-0 md:border-r border-slate-50 order-1">
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 md:mb-6">${data.enTitle}</h2>
+                        <p class="text-slate-600 text-sm md:text-base mb-6 md:mb-8">${data.enDetails}</p>
+                        <div class="space-y-3 md:space-y-4">
+                            <div class="flex items-center gap-3 md:gap-4 text-blue-600 font-bold text-sm md:text-base">
                                 <i data-lucide="mail" class="w-5 h-5"></i> ${data.email}
                             </div>
-                            <div class="flex items-center gap-4 text-blue-600 font-bold">
+                            <div class="flex items-center gap-3 md:gap-4 text-blue-600 font-bold text-sm md:text-base">
                                 <i data-lucide="phone" class="w-5 h-5"></i> ${data.phone}
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/3 bg-blue-600 flex flex-col items-center justify-center p-12 text-white text-center">
-                        <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center mb-6">
-                            <i data-lucide="headset" class="w-12 h-12"></i>
+                    <div class="w-full md:w-1/3 bg-blue-600 flex flex-col items-center justify-center p-8 md:p-12 text-white text-center order-2">
+                        <div class="w-16 h-16 md:w-24 md:h-24 bg-white/10 rounded-full flex items-center justify-center mb-4 md:mb-6">
+                            <i data-lucide="headset" class="w-10 h-10 md:w-12 md:h-12"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-2">Technical Support</h3>
-                        <h3 class="text-2xl font-bold arabic-text">الدعم الفني</h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-1 md:mb-2">Technical Support</h3>
+                        <h3 class="text-xl md:text-2xl font-bold arabic-text">الدعم الفني</h3>
                     </div>
-                    <div class="w-1/3 p-12 flex flex-col justify-center items-end text-right arabic-text border-l border-slate-50">
-                        <h2 class="text-4xl font-black text-slate-900 mb-6">${data.arTitle}</h2>
-                        <p class="text-slate-600 mb-8">${data.arDetails}</p>
-                        <div class="space-y-4">
-                            <div class="flex flex-row-reverse items-center gap-4 text-blue-600 font-bold">
+                    <div class="w-full md:w-1/3 p-6 md:p-12 flex flex-col justify-center items-end text-right arabic-text order-3 mb-16 md:mb-0 border-t md:border-t-0 md:border-l border-slate-50">
+                        <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-4 md:mb-6">${data.arTitle}</h2>
+                        <p class="text-slate-600 text-sm md:text-base mb-6 md:mb-8">${data.arDetails}</p>
+                        <div class="space-y-3 md:space-y-4">
+                            <div class="flex flex-row-reverse items-center gap-3 md:gap-4 text-blue-600 font-bold text-sm md:text-base">
                                 <i data-lucide="mail" class="w-5 h-5"></i> <span dir="ltr">${data.email}</span>
                             </div>
-                            <div class="flex flex-row-reverse items-center gap-4 text-blue-600 font-bold">
+                            <div class="flex flex-row-reverse items-center gap-3 md:gap-4 text-blue-600 font-bold text-sm md:text-base">
                                 <i data-lucide="phone" class="w-5 h-5"></i> <span dir="ltr">${data.phone}</span>
                             </div>
                         </div>
@@ -331,6 +353,9 @@
 
             container.innerHTML = html;
             lucide.createIcons();
+            
+            // Auto-scroll to top of slide on mobile change
+            container.scrollTop = 0;
         }
 
         function nextSlide() { if(currentSlide < slides.length - 1) { currentSlide++; renderSlide(); } }
